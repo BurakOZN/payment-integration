@@ -7,9 +7,9 @@ Supports .NET Framework, .NET Core 1.1, .NET Core 2.0 runtimes, .NET Core 2.1 ru
 To install Payment Integration, run the following command in the Package Manager Console
 
 ```
-Install-Package PaymentIntegration -Version 1.0.1
+Install-Package PaymentIntegration
 ```
-https://www.nuget.org/packages/PaymentIntegration/1.0.1
+https://www.nuget.org/packages/PaymentIntegration
 
 # Usage
 ### Auth
