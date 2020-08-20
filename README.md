@@ -2,6 +2,7 @@
 
 Supports .NET Framework, .NET Core 1.1, .NET Core 2.0 runtimes, .NET Core 2.1 runtimes
 ## Installation
+[![NuGet](https://img.shields.io/nuget/v/paymentintegration.svg)](https://www.nuget.org/packages/PaymentIntegration)
 
 To install Payment Integration, run the following command in the Package Manager Console
 
