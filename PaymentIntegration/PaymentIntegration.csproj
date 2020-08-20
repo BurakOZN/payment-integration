@@ -5,8 +5,8 @@
     <Authors>burak_ozen</Authors>
     <Description>VPOS Payment Integration</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.0.2</Version>
-    <PackageReleaseNotes>Check request model changes</PackageReleaseNotes>
+    <Version>1.0.5</Version>
+    <PackageReleaseNotes>Property name changes</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
