@@ -29,6 +29,7 @@ authReq.Cvv2 = "111";
 authReq.Ecommerce = true;
 authReq.Expiry = YYMM;
 authReq.Lang = "TR";
+authReq.OrderId = "123"; //must be uniq
 
 Payment paymentManager = new Payment(paymentOptions);
 var payment = await paymentManager.Auth(authReq);
@@ -77,4 +78,14 @@ public async Task<IActionResult> Index(string token)
   var checkResp = await paymentManager.CheckPayment(checkReq);
   //you can save response data or show your screen
 }
+```
+### Use Encryption
+If you want the request to be encrypted
+```csharp
+var paymentOptions = new PaymentOptions(
+                "url",
+                "yourApiKey",
+                "yourSecretKey",
+                true,
+                "yourEncryptionPassword");
 ```
