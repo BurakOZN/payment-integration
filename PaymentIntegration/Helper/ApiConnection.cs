@@ -32,33 +32,13 @@ namespace PaymentIntegration.Helper
             }
         }
 
-        public async Task<ConnectionResponseModel<T>> Get<T>(string url, Dictionary<string, string> _headers = null) where T : class
-        {
-            var request = new HttpRequestMessage(HttpMethod.Get, url);
-            if (_headers != null)
-                SetHeader(request, _headers);
-            return await SendAsync<T>(request);
-        }
-        public async Task<ConnectionResponseModel<T>> Post<T>(string url, object content, Dictionary<string, string> _headers = null) where T : class
+        public async Task<ConnectionResponseModel<T>> Post<T>(string url, object content, Dictionary<string, string> _headers, bool useEncryption = false, string encryptionPassword = "") where T : class
         {
             var request = new HttpRequestMessage(HttpMethod.Post, url);
             var contentString = JsonConvert.SerializeObject(content);
+            if (useEncryption)
+                contentString = Encryption.Encrypt(contentString, encryptionPassword);
             request.Content = new StringContent(contentString, Encoding.UTF8, "application/json");
-            if (_headers != null)
-                SetHeader(request, _headers);
-            return await SendAsync<T>(request);
-        }
-        public async Task<ConnectionResponseModel<T>> Put<T>(string url, object content, Dictionary<string, string> _headers = null) where T : class
-        {
-            var request = new HttpRequestMessage(HttpMethod.Put, url);
-            request.Content = new StringContent(JsonConvert.SerializeObject(content));
-            if (_headers != null)
-                SetHeader(request, _headers);
-            return await SendAsync<T>(request);
-        }
-        public async Task<ConnectionResponseModel<T>> Delete<T>(string url, Dictionary<string, string> _headers = null) where T : class
-        {
-            var request = new HttpRequestMessage(HttpMethod.Delete, url);
             if (_headers != null)
                 SetHeader(request, _headers);
             return await SendAsync<T>(request);

@@ -19,7 +19,7 @@ namespace PaymentIntegration.Manager
         /// </summary>
         public async Task<ConnectionResponse<PaymentResponse<AuthResponse>>> Auth(AuthRequest requestModel)
         {
-            return await NonSecurePayment<AuthResponse>(PaymentOptions, requestModel, "/api/v1/NonSecure/Auth");
+            return await PaymentOperation<AuthResponse>(PaymentOptions, requestModel, "/api/v1/NonSecure/Auth");
         }
         /// <summary>
         /// Pre Sale
@@ -27,7 +27,7 @@ namespace PaymentIntegration.Manager
         /// </summary>
         public async Task<ConnectionResponse<PaymentResponse<PreAuthResponse>>> PreAuth(PreAuthRequest requestModel)
         {
-            return await NonSecurePayment<PreAuthResponse>(PaymentOptions, requestModel, "/api/v1/NonSecure/PreAuth");
+            return await PaymentOperation<PreAuthResponse>(PaymentOptions, requestModel, "/api/v1/NonSecure/PreAuth");
         }
         /// <summary>
         /// Post Sale
@@ -35,7 +35,7 @@ namespace PaymentIntegration.Manager
         /// </summary>
         public async Task<ConnectionResponse<PaymentResponse<PointAuthResponse>>> PointAuth(PointAuthRequest requestModel)
         {
-            return await NonSecurePayment<PointAuthResponse>(PaymentOptions, requestModel, "/api/v1/NonSecure/PointAuth");
+            return await PaymentOperation<PointAuthResponse>(PaymentOptions, requestModel, "/api/v1/NonSecure/PointAuth");
         }
         /// <summary>
         /// Point Sale
@@ -43,7 +43,7 @@ namespace PaymentIntegration.Manager
         /// </summary>
         public async Task<ConnectionResponse<PaymentResponse<PostAuthResponse>>> PostAuth(PostAuthRequest requestModel)
         {
-            return await NonSecurePayment<PostAuthResponse>(PaymentOptions, requestModel, "/api/v1/NonSecure/PostAuth");
+            return await PaymentOperation<PostAuthResponse>(PaymentOptions, requestModel, "/api/v1/NonSecure/PostAuth");
         }
         /// <summary>
         /// Void
@@ -51,7 +51,7 @@ namespace PaymentIntegration.Manager
         /// </summary>
         public async Task<ConnectionResponse<PaymentResponse<VoidResponse>>> Void(VoidRequest requestModel)
         {
-            return await NonSecurePayment<VoidResponse>(PaymentOptions, requestModel, "/api/v1/NonSecure/Void");
+            return await PaymentOperation<VoidResponse>(PaymentOptions, requestModel, "/api/v1/NonSecure/Void");
         }
         /// <summary>
         /// Refund
@@ -59,7 +59,7 @@ namespace PaymentIntegration.Manager
         /// </summary>
         public async Task<ConnectionResponse<PaymentResponse<RefundResponse>>> Refund(RefundRequest requestModel)
         {
-            return await NonSecurePayment<RefundResponse>(PaymentOptions, requestModel, "/api/v1/NonSecure/Refund");
+            return await PaymentOperation<RefundResponse>(PaymentOptions, requestModel, "/api/v1/NonSecure/Refund");
         }
         /// <summary>
         /// Point Inquiry
@@ -67,7 +67,7 @@ namespace PaymentIntegration.Manager
         /// </summary>
         public async Task<ConnectionResponse<PaymentResponse<PointInquiryResponse>>> PointInquiry(PointInquiryRequest requestModel)
         {
-            return await NonSecurePayment<PointInquiryResponse>(PaymentOptions, requestModel, "/api/v1/NonSecure/PointInquiry");
+            return await PaymentOperation<PointInquiryResponse>(PaymentOptions, requestModel, "/api/v1/NonSecure/PointInquiry");
         }
         /// <summary>
         /// Batch Close
@@ -75,7 +75,7 @@ namespace PaymentIntegration.Manager
         /// </summary>
         public async Task<ConnectionResponse<PaymentResponse<BatchCloseResponse>>> BatchClose(BatchCloseRequest requestModel)
         {
-            return await NonSecurePayment<BatchCloseResponse>(PaymentOptions, requestModel, "/api/v1/NonSecure/BatchClose");
+            return await PaymentOperation<BatchCloseResponse>(PaymentOptions, requestModel, "/api/v1/NonSecure/BatchClose");
         }
         /// <summary>
         /// 3D Sale
@@ -83,7 +83,7 @@ namespace PaymentIntegration.Manager
         /// </summary>
         public async Task<ConnectionResponse<PaymentResponse<Auth3DResponse>>> Auth3D(Auth3DRequest requestModel)
         {
-            return await NonSecurePayment<Auth3DResponse>(PaymentOptions, requestModel, "/v1/api/ThreeD/ThreeDModelAuth");
+            return await PaymentOperation<Auth3DResponse>(PaymentOptions, requestModel, "/v1/api/ThreeD/ThreeDModelAuth");
         }
         /// <summary>
         /// 3D Pre Sale
@@ -91,7 +91,7 @@ namespace PaymentIntegration.Manager
         /// </summary>
         public async Task<ConnectionResponse<PaymentResponse<PreAuth3DResponse>>> PreAuth3D(PreAuth3DRequest requestModel)
         {
-            return await NonSecurePayment<PreAuth3DResponse>(PaymentOptions, requestModel, "/v1/api/ThreeD/ThreeDModelPreAuth");
+            return await PaymentOperation<PreAuth3DResponse>(PaymentOptions, requestModel, "/v1/api/ThreeD/ThreeDModelPreAuth");
         }
         /// <summary>
         /// Check Payment
@@ -99,14 +99,14 @@ namespace PaymentIntegration.Manager
         /// </summary>
         public async Task<ConnectionResponse<PaymentResponse<CheckPaymentResponse>>> CheckPayment(CheckPaymentRequest requestModel)
         {
-            return await NonSecurePayment<CheckPaymentResponse>(PaymentOptions, requestModel, "/v1/api/ThreeD/CheckPayment");
+            return await PaymentOperation<CheckPaymentResponse>(PaymentOptions, requestModel, "/v1/api/ThreeD/CheckPayment");
         }
-        private async Task<ConnectionResponse<PaymentResponse<T>>> NonSecurePayment<T>(PaymentOptions PaymentOptions, IRequestModel requestModel, string apiUrl)
+        private async Task<ConnectionResponse<PaymentResponse<T>>> PaymentOperation<T>(PaymentOptions PaymentOptions, IRequestModel requestModel, string apiUrl)
         {
             var header = new Dictionary<string, string>();
             header.Add("api_key", PaymentOptions.ApiKey);
             header.Add("secret_key", PaymentOptions.SecretKey);
-            var authResponse = await ApiConnection.Instance.Post<PaymentResponse<T>>(PaymentOptions.BaseUrl + apiUrl, requestModel, header);
+            var authResponse = await ApiConnection.Instance.Post<PaymentResponse<T>>(PaymentOptions.BaseUrl + apiUrl, requestModel, header, PaymentOptions.UseEncryption, PaymentOptions.EncryptionPassword);
             var payResponse = new ConnectionResponse<PaymentResponse<T>>();
             if (!authResponse.IsSuccess)
             {
