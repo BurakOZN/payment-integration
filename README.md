@@ -60,7 +60,9 @@ if (resp.IsConnectionSuccess)//responseCode:200
     if (res.State == PaymentState.Success)//Payment success
     {
       //Please save orderId and processId
-      return Content(resp.Result.Result.HtmlContent, "text/html");//Redirect for MVC project
+      var htmlContent = resp.Result.Result.HtmlContent;
+      htmlContent = Encoding.UTF8.GetString(Convert.FromBase64String(htmlContent));
+      return Content(htmlContent, "text/html");//Redirect for MVC project
     }
 }
 
