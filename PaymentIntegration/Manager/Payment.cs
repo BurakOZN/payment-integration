@@ -83,7 +83,7 @@ namespace PaymentIntegration.Manager
         /// </summary>
         public async Task<ConnectionResponse<PaymentResponse<Auth3DResponse>>> Auth3D(Auth3DRequest requestModel)
         {
-            return await PaymentOperation<Auth3DResponse>(PaymentOptions, requestModel, "/v1/api/ThreeD/ThreeDModelAuth");
+            return await PaymentOperation<Auth3DResponse>(PaymentOptions, requestModel, "/api/v1/ThreeD/ThreeDModelAuth");
         }
         /// <summary>
         /// 3D Pre Sale
@@ -91,7 +91,7 @@ namespace PaymentIntegration.Manager
         /// </summary>
         public async Task<ConnectionResponse<PaymentResponse<PreAuth3DResponse>>> PreAuth3D(PreAuth3DRequest requestModel)
         {
-            return await PaymentOperation<PreAuth3DResponse>(PaymentOptions, requestModel, "/v1/api/ThreeD/ThreeDModelPreAuth");
+            return await PaymentOperation<PreAuth3DResponse>(PaymentOptions, requestModel, "/api/v1/ThreeD/ThreeDModelPreAuth");
         }
         /// <summary>
         /// Check Payment
@@ -99,7 +99,7 @@ namespace PaymentIntegration.Manager
         /// </summary>
         public async Task<ConnectionResponse<PaymentResponse<CheckPaymentResponse>>> CheckPayment(CheckPaymentRequest requestModel)
         {
-            return await PaymentOperation<CheckPaymentResponse>(PaymentOptions, requestModel, "/v1/api/ThreeD/CheckPayment");
+            return await PaymentOperation<CheckPaymentResponse>(PaymentOptions, requestModel, "/api/v1/ThreeD/CheckPayment");
         }
         private async Task<ConnectionResponse<PaymentResponse<T>>> PaymentOperation<T>(PaymentOptions PaymentOptions, IRequestModel requestModel, string apiUrl)
         {
