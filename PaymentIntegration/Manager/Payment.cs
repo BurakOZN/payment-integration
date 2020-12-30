@@ -101,6 +101,14 @@ namespace PaymentIntegration.Manager
         {
             return await PaymentOperation<CheckPaymentResponse>(PaymentOptions, requestModel, "/api/v1/ThreeD/CheckPayment");
         }
+        public async Task<ConnectionResponse<PaymentResponse<CardTokenizeResponse>>> CardEncrypted(CardTokenizeRequest requestModel)
+        {
+            return await PaymentOperation<CardTokenizeResponse>(PaymentOptions, requestModel, "/api/Card/Encrypted");
+        }
+        public async Task<ConnectionResponse<PaymentResponse<CardTokenizeResponse>>> CardDecrypted(CardTokenizeRequest requestModel)
+        {
+            return await PaymentOperation<CardTokenizeResponse>(PaymentOptions, requestModel, "/api/Card/Decrypted");
+        }
         private async Task<ConnectionResponse<PaymentResponse<T>>> PaymentOperation<T>(PaymentOptions PaymentOptions, IRequestModel requestModel, string apiUrl)
         {
             var header = new Dictionary<string, string>();
