@@ -91,3 +91,4 @@ var paymentOptions = new PaymentOptions(
                 true,
                 "yourEncryptionPassword");
 ```
+Example UI (.Net5 MVC) project https://github.com/BurakOZN/payment-integration-example
