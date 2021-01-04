@@ -42,30 +42,31 @@ var paymentOptions = new PaymentOptions(
                 "yourApiKey",
                 "yourSecretKey");
                 
-var auth3DReq = new Auth3DRequest();
-auth3DReq.Amount = 2;
-auth3DReq.CardNo = "1111111111111111";
-auth3DReq.Currency = 978;
-auth3DReq.Cvv2 = "111";
-auth3DReq.Ecommerce = true;
-auth3DReq.Expiry = YYMM;
-auth3DReq.Lang = "TR";
+var auth3DRequest = new Auth3DRequest();
+auth3DRequest.Amount = 500;//5.00
+auth3DRequest.CardNo = "1122112211221122";
+auth3DRequest.Currency = 978;
+auth3DRequest.Cvv2 = "123";
+auth3DRequest.Ecommerce = true;
+auth3DRequest.Expiry = 2408;//YYMM
+auth3DRequest.InstallmentCount = 1;
+auth3DRequest.Lang = "TR";
+auth3DRequest.OrderId = DateTime.Now.Ticks.ToString();
 
-Payment paymentManager = new Payment(paymentOptions);
-var payment = await paymentManager.Auth(auth3DReq);
-
-if (resp.IsConnectionSuccess)//responseCode:200
-{
-    var res = resp.Result;
-    if (res.State == PaymentState.Success)//Payment success
-    {
-      //Please save orderId and processId
-      var htmlContent = resp.Result.Result.HtmlContent;
-      htmlContent = Encoding.UTF8.GetString(Convert.FromBase64String(htmlContent));
-      return Content(htmlContent, "text/html");//Redirect for MVC project
-    }
-}
-
+var payment = new Payment(paymentOptions);
+var response = await payment.Auth3D(auth3DRequest);
+if (response.IsConnectionSuccess)//StatusCode=200
+  if (response.Result.State == PaymentState.Success)
+  {
+    var html64 = response.Result.Result.HtmlContent;
+    var htmlContent = Encoding.UTF8.GetString(Convert.FromBase64String(html64));
+    return Content(htmlContent, "text/html");
+  }
+  else
+    return View(new ErrorViewModel() { ErrorMessage = response.Result.Result.ResultMessage });
+return View(new ErrorViewModel() { ErrorMessage = "Connection Error:" + response.StatusCode });
+            
+            
 The return url should receive the token and reach the payment result by checking.
 Example MVC;
 public async Task<IActionResult> Index(string token)
