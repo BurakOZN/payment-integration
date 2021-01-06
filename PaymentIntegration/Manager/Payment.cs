@@ -97,9 +97,21 @@ namespace PaymentIntegration.Manager
         /// Check Payment
         /// 3D Ödeme Kontrol
         /// </summary>
-        public async Task<ConnectionResponse<PaymentResponse<CheckPaymentResponse>>> CheckPayment(CheckPaymentRequest requestModel)
+        public async Task<ConnectionResponse<PaymentResponse<CheckPaymentResponse>>> CheckPayment(CheckByTokenRequest requestModel)
         {
             return await PaymentOperation<CheckPaymentResponse>(PaymentOptions, requestModel, "/api/v1/ThreeD/CheckPayment");
+        }
+        public async Task<ConnectionResponse<PaymentResponse<CheckPaymentResponse>>> CheckByProcessId(CheckByProcessIdRequest requestModel)
+        {
+            return await PaymentOperation<CheckPaymentResponse>(PaymentOptions, requestModel, "/api/Check/ByProcessId");
+        }
+        public async Task<ConnectionResponse<PaymentResponse<CheckPaymentResponse>>> CheckOrderId(CheckByOrderIdRequest requestModel)
+        {
+            return await PaymentOperation<CheckPaymentResponse>(PaymentOptions, requestModel, "/api/Check/ByOrderId");
+        }
+        public async Task<ConnectionResponse<PaymentResponse<CheckPaymentResponse>>> CheckByToken(CheckByTokenRequest requestModel)
+        {
+            return await PaymentOperation<CheckPaymentResponse>(PaymentOptions, requestModel, "/api/Check/ByToken");
         }
         public async Task<ConnectionResponse<PaymentResponse<CardTokenizeResponse>>> CardEncrypted(CardTokenizeRequest requestModel)
         {

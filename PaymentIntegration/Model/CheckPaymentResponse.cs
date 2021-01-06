@@ -23,5 +23,6 @@ namespace PaymentIntegration.Model
         public string TerminalId { get; set; }
         public int BatchNo { get; set; }
         public DateTime ProcessDate { get; set; }
+        public string Rrn { get; set; }
     }
 }
