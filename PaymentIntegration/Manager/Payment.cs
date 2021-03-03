@@ -113,6 +113,10 @@ namespace PaymentIntegration.Manager
         {
             return await PaymentOperation<CheckPaymentResponse>(PaymentOptions, requestModel, "/api/Check/ByToken");
         }
+        public async Task<ConnectionResponse<PaymentResponse<CheckPaymentResponse>>> Complete3D(Complete3DRequest requestModel)
+        {
+            return await PaymentOperation<CheckPaymentResponse>(PaymentOptions, requestModel, "/api/v1/ThreeD/Complete3D");
+        }
         public async Task<ConnectionResponse<PaymentResponse<CardTokenizeResponse>>> CardEncrypted(CardTokenizeRequest requestModel)
         {
             return await PaymentOperation<CardTokenizeResponse>(PaymentOptions, requestModel, "/api/Card/Encrypted");
