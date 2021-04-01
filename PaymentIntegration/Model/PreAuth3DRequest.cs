@@ -13,6 +13,7 @@
         public bool Ecommerce { get; set; }
         public string Version { get; set; }
         public string ReturnUrlParams { get; set; }
+        public string ReturnUrl { get; set; }
     }
 
 }
