@@ -125,12 +125,71 @@ namespace PaymentIntegration.Manager
         {
             return await PaymentOperation<CardTokenizeResponse>(PaymentOptions, requestModel, "/api/Card/Decrypted");
         }
+         public async Task<ConnectionResponse<PaymentResponse<OrderCreateResponse>>> CreateOrder(OrderCreateRequest requestModel)
+        {
+            return await PaymentOperation<OrderCreateResponse>(PaymentOptions, requestModel, "/api/v1/Order/CreateOrder");
+        }
+        public async Task<ConnectionResponse<PaymentResponse<OrderCreateResponse>>> CreateOrder3D(OrderCreateRequest requestModel)
+        {
+            return await PaymentOperation<OrderCreateResponse>(PaymentOptions, requestModel, "/api/v1/Order/CreateOrder3D");
+        }
+        /// <summary>
+        /// Create NonSecure Order Transaction
+        /// Satış İşlemi Oluşturma (Ortak Ödeme Ekranı)
+        /// </summary>
+        public async Task<ConnectionResponse<PaymentResponse<OrderCREResponse>>> CreateOrder(OrderCRERequest requestModel)
+        {
+            return await PaymentOperation<OrderCREResponse>(PaymentOptions, requestModel, "/api/v1/Order/CreateOrder");
+        }
+        /// <summary>
+        /// Create 3D Auth Order Transaction
+        /// 3D Satış Oluşturma (Ortak Ödeme Ekranı)
+        /// </summary>
+        public async Task<ConnectionResponse<PaymentResponse<OrderCREResponse>>> CreateOrder3D(OrderCRERequest requestModel)
+        {
+            return await PaymentOperation<OrderCREResponse>(PaymentOptions, requestModel, "/api/v1/Order/CreateOrder3D");
+        }
+        /// <summary>
+        /// Check Order URL
+        /// Sipariş URL Kontrolü
+        /// </summary>
+        public async Task<ConnectionResponse<PaymentResponse<OrderCHResponse>>> OrderCH(string pk)
+        {
+
+            return await PaymentOperation<OrderCHResponse>(PaymentOptions, "/api/v1/Order/CheckOrder?pk="+pk);
+        }
+        public async Task<ConnectionResponse<PaymentResponse<OrderCMResponse>>> OrderCM(OrderCMRequest requestModel)
+        {
+            return await PaymentOperation<OrderCMResponse>(PaymentOptions, requestModel, "/api/v1/Order/CompleteOrderAuth");
+        }
+        public async Task<ConnectionResponse<PaymentResponse<Auth3DResponse>>> OrderTCM(OrderTCMRequest requestModel)
+        {
+            return await PaymentOperation<Auth3DResponse>(PaymentOptions, requestModel, "/api/v1/Order/CompleteOrderThreeDAuth");
+        }
+
         private async Task<ConnectionResponse<PaymentResponse<T>>> PaymentOperation<T>(PaymentOptions PaymentOptions, IRequestModel requestModel, string apiUrl)
         {
             var header = new Dictionary<string, string>();
             header.Add("api_key", PaymentOptions.ApiKey);
             header.Add("secret_key", PaymentOptions.SecretKey);
             var authResponse = await ApiConnection.Instance.Post<PaymentResponse<T>>(PaymentOptions.BaseUrl + apiUrl, requestModel, header, PaymentOptions.UseEncryption, PaymentOptions.EncryptionPassword);
+            var payResponse = new ConnectionResponse<PaymentResponse<T>>();
+            if (!authResponse.IsSuccess)
+            {
+                payResponse.StatusCode = authResponse.StatusCode;
+                return payResponse;
+            }
+            payResponse.IsConnectionSuccess = true;
+            payResponse.Result = authResponse.Result;
+            return payResponse;
+        }
+
+        private async Task<ConnectionResponse<PaymentResponse<T>>> PaymentOperation<T>(PaymentOptions PaymentOptions, string apiUrl)
+        {
+            var header = new Dictionary<string, string>();
+            header.Add("api_key", PaymentOptions.ApiKey);
+            header.Add("secret_key", PaymentOptions.SecretKey);
+            var authResponse = await ApiConnection.Instance.Get<PaymentResponse<T>>(PaymentOptions.BaseUrl + apiUrl, header);
             var payResponse = new ConnectionResponse<PaymentResponse<T>>();
             if (!authResponse.IsSuccess)
             {

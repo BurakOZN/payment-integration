@@ -43,6 +43,13 @@ namespace PaymentIntegration.Helper
                 SetHeader(request, _headers);
             return await SendAsync<T>(request);
         }
+        public async Task<ConnectionResponseModel<T>> Get<T>(string url, Dictionary<string, string> _headers) where T : class
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get, url);
+            if (_headers != null)
+                SetHeader(request, _headers);
+            return await SendAsync<T>(request);
+        }
 
         private async Task<ConnectionResponseModel<T>> SendAsync<T>(HttpRequestMessage request) where T : class
         {
